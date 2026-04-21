@@ -16,10 +16,6 @@
 - CSS3（样式布局 + 移动端适配）
 - JavaScript（交互逻辑、本地存储、文件导出）
 
-## 文件结构
-diet-7days-ai/├── index.html # 主页面├── css/│ └── style.css # 样式文件├── js/│ └── script.js # 交互逻辑└── README.md # 项目说明
-
-
 
 ## 使用说明
 1. 打开 `index.html` 即可运行
