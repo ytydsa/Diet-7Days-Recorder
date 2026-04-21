@@ -5,24 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>七日饮食记录AI分析工具</title>
   <link rel="stylesheet" href="style.css">
-  <script src="script.js"></script>
 </head>
 <body>
 
   <div class="title">7天饮食记录</div>
   <div class="tip">左右滑动查看更多天数</div>
 
-
-
   <!-- 7天饮食卡片 -->
   <div class="scroll-container" id="weekContainer"></div>
 
-<!-- 按钮紧靠底部输入框 -->
-<div class="bottom-bar" style="margin-top: 12px;">
-  <button class="btn save-btn" onclick="manualSave()">已自动保存</button>
-  <button class="btn export-btn" onclick="exportData()">导出 JSON</button>
-</div>
+  <!-- 翻页按钮 -->
+  <div class="pagination">
+    <button id="prevBtn" class="page-btn">← 上一天</button>
+    <button id="nextBtn" class="page-btn">下一天 →</button>
+  </div>
 
+  <!-- 功能按钮 -->
+  <div class="bottom-bar">
+    <button class="btn save-btn" onclick="manualSave()">已自动保存</button>
+    <button class="btn export-btn" onclick="exportData()">导出 JSON</button>
+  </div>
+
+  <!-- 脚本只写一次，且放在 body 内部 -->
   <script src="script.js"></script>
 </body>
 </html>

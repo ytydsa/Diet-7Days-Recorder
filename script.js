@@ -1,29 +1,36 @@
-// 生成7天卡片
-document.addEventListener('DOMContentLoaded', () => {
-  const container = document.getElementById('weekContainer');
-  for (let i = 1; i <= 7; i++) {
-    const card = document.createElement('div');
-    card.className = 'day-card';
-    card.innerHTML = `
-      <div class="day-title">第 ${i} 天</div>
-      <div class="meal-box">
-        <label>早餐</label>
-        <textarea data-day="${i}" data-meal="breakfast" oninput="autoSave()"></textarea>
-      </div>
-      <div class="meal-box">
-        <label>午餐</label>
-        <textarea data-day="${i}" data-meal="lunch" oninput="autoSave()"></textarea>
-      </div>
-      <div class="meal-box">
-        <label>晚餐</label>
-        <textarea data-day="${i}" data-meal="dinner" oninput="autoSave()"></textarea>
-      </div>
-    `;
-    container.appendChild(card);
-  }
+const container = document.getElementById('weekContainer');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
 
-  // 加载保存的数据
-  loadSavedData();
+// 只生成 7 张卡片
+for (let i = 1; i <= 7; i++) {
+  const card = document.createElement('div');
+  card.className = 'day-card';
+  card.innerHTML = `
+    <div class="day-title">第 ${i} 天</div>
+    <div class="meal-box">
+      <label>早餐</label>
+      <textarea data-day="${i}" data-meal="breakfast" oninput="autoSave()"></textarea>
+    </div>
+    <div class="meal-box">
+      <label>午餐</label>
+      <textarea data-day="${i}" data-meal="lunch" oninput="autoSave()"></textarea>
+    </div>
+    <div class="meal-box">
+      <label>晚餐</label>
+      <textarea data-day="${i}" data-meal="dinner" oninput="autoSave()"></textarea>
+    </div>
+  `;
+  container.appendChild(card);
+}
+
+// 翻页功能
+prevBtn.addEventListener('click', () => {
+  container.scrollBy({ left: -window.innerWidth, behavior: 'smooth' });
+});
+
+nextBtn.addEventListener('click', () => {
+  container.scrollBy({ left: window.innerWidth, behavior: 'smooth' });
 });
 
 // 自动保存
@@ -37,9 +44,8 @@ function manualSave() {
   alert('已保存所有数据');
 }
 
-// 获取全部数据（个人信息已写死，不从页面获取）
+// 获取全部数据
 function getAllData() {
-  // ====================== 在这里写死你的个人信息 ======================
   const userInfo = {
     name: "周福彬",
     gender: "男",
@@ -49,7 +55,6 @@ function getAllData() {
     goal: "减脂",
     activityLevel: "轻度"
   };
-  // ====================================================================
 
   const records = [];
   for (let i = 1; i <= 7; i++) {
@@ -67,7 +72,7 @@ function getAllData() {
   return { userInfo, recordDate, dietRecords: records };
 }
 
-// 导出JSON + 导出后清空数据
+// 导出JSON + 清空数据
 function exportData() {
   const data = getAllData();
   const name = data.userInfo.name || 'unknown';
@@ -84,7 +89,6 @@ function exportData() {
   a.click();
   URL.revokeObjectURL(url);
 
-  // 导出成功后清空所有饮食数据
   clearAllDietData();
 }
 
@@ -96,10 +100,10 @@ function clearAllDietData() {
     document.querySelector(`textarea[data-day="${i}"][data-meal="dinner"]`).value = '';
   }
   localStorage.removeItem('dietData');
-  alert("✅ 导出成功！\n本周饮食记录已清空，可开始新一周记录");
+  alert("✅ 导出成功！记录已清空");
 }
 
-// 加载本地数据（只加载饮食）
+// 加载本地数据
 function loadSavedData() {
   const saved = localStorage.getItem('dietData');
   if (!saved) return;
@@ -112,3 +116,6 @@ function loadSavedData() {
     document.querySelector(`textarea[data-day="${day}"][data-meal="dinner"]`).value = record.dinner || '';
   });
 }
+
+// 页面加载完成后读取数据
+document.addEventListener('DOMContentLoaded', loadSavedData);
