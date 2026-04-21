@@ -67,7 +67,7 @@ function getAllData() {
   return { userInfo, recordDate, dietRecords: records };
 }
 
-// 导出JSON
+// 导出JSON + 导出后清空数据
 function exportData() {
   const data = getAllData();
   const name = data.userInfo.name || 'unknown';
@@ -83,9 +83,23 @@ function exportData() {
   a.download = filename;
   a.click();
   URL.revokeObjectURL(url);
+
+  // 导出成功后清空所有饮食数据
+  clearAllDietData();
 }
 
-// 加载本地数据（只加载饮食，删除了个人信息相关代码）
+// 清空所有饮食记录
+function clearAllDietData() {
+  for (let i = 1; i <= 7; i++) {
+    document.querySelector(`textarea[data-day="${i}"][data-meal="breakfast"]`).value = '';
+    document.querySelector(`textarea[data-day="${i}"][data-meal="lunch"]`).value = '';
+    document.querySelector(`textarea[data-day="${i}"][data-meal="dinner"]`).value = '';
+  }
+  localStorage.removeItem('dietData');
+  alert("✅ 导出成功！\n本周饮食记录已清空，可开始新一周记录");
+}
+
+// 加载本地数据（只加载饮食）
 function loadSavedData() {
   const saved = localStorage.getItem('dietData');
   if (!saved) return;
